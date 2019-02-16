@@ -3,6 +3,8 @@
 // github.com/kenellorando/clog
 
 // Log Levels: Debug (5), Info (4), Warn (3), Error (2), Fatal (1), Disabled (0)
+// The default is 0 (disabled) unless an init is attempted
+
 // args for Debug, Info, Warn: (module string, message string)
 // args for Error, Fatal: (module string, message string, err error)
 
@@ -17,7 +19,7 @@ import (
 	"time"
 )
 
-var verbosity = 5
+var verbosity = 0
 var err error
 
 // LogData - Data contained within a log message
@@ -30,9 +32,9 @@ type LogData struct {
 	Err     error
 }
 
-// Init - Receives of initialization data
+// Init - Receiver of any initialization data
 // Valid log levels are 1-5
-func Init(logLevel int) {
+func Init(logLevel int) int {
 	// Sets the verbosity level to the given init value
 	// and returns a good status
 	if logLevel < 0 || logLevel > 5 {
@@ -42,6 +44,7 @@ func Init(logLevel int) {
 	} else {
 		verbosity = logLevel
 	}
+	return verbosity
 }
 
 // Debug - lowest level log
