@@ -6,17 +6,18 @@ a super simple go logging library
 ...
 
 import (
+  ...
   "github.com/kenellorando/clog"
 )
 
 func example() {
-  clog.Debug("example", "Starting example function.")
-  clog.Info("example", "Doing something.")
-  clog.Warn("example", "Something's not right")
+  clog.Debug("example", "Starting example.")
+  clog.Info("example", "Something is happening!")
+  clog.Warn("example", "Something suspect is happening...")
   
   _, err := os.Open("fake.txt")
   if err != nil {
-    clog.Error("example", "Couldn't carry out an operation", err)
+    clog.Error("example", "An error has occured.", err)
   }
 }
 
@@ -24,10 +25,11 @@ func main() {
   clog.Debug("main", "Starting main.")
   example()
   
-  conn, err :- net.Dial("tcp", "example.com:443")
+  _, err := os.Open("fake.txt")
   if err != nil {
-    clog.Fatal("main", "Couldn't dial in to server.", err)
+    clog.Error("example", "Could not open file for reading!", err)
   }
+  clog.Debug("main", "End of program.")
 }
 ```
 
