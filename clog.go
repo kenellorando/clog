@@ -2,7 +2,7 @@
 // a super simple go logging library
 // github.com/kenellorando/clog
 
-// Log Levels: Debug, Info, Warn, Error, Fatal
+// Log Levels: Debug (5), Info (4), Warn (3), Error (2), Fatal (1), Disabled (0)
 // args for Debug, Info, Warn: (module string, message string)
 // args for Error, Fatal: (module string, message string, err error)
 
@@ -12,10 +12,12 @@ package clog
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 	"time"
 )
 
+var verbosity = 5
 var err error
 
 // LogData - Data contained within a log message
@@ -28,36 +30,60 @@ type LogData struct {
 	Err     error
 }
 
+// Init - Receives of initialization data
+// Valid log levels are 1-5
+func Init(logLevel int) {
+	// Sets the verbosity level to the given init value
+	// and returns a good status
+	if logLevel < 0 || logLevel > 5 {
+		// Default to 5 if a bad value was received
+		verbosity = 5
+		setLogData(timeNow(), "clogMeta", "Init", "An invalid logging level was received. Logging verbosity will default to "+strconv.Itoa(verbosity)+" (debug).", err)
+	} else {
+		verbosity = logLevel
+	}
+}
+
 // Debug - lowest level log
 // Atomic level application logging
 func Debug(module string, message string) {
-	setLogData(timeNow(), "Debug", module, message, err)
+	if verbosity == 5 {
+		setLogData(timeNow(), "Debug", module, message, err)
+	}
 }
 
 // Info - functional information level log
 // Function level application information
 func Info(module string, message string) {
-	setLogData(timeNow(), "Info", module, message, err)
+	if verbosity >= 4 {
+		setLogData(timeNow(), "Info", module, message, err)
+	}
 }
 
 // Warn - functional warning level log
 // Monitoring for potential erroneous or fatal situations
 func Warn(module string, message string) {
-	setLogData(timeNow(), "Warn", module, message, err)
+	if verbosity >= 3 {
+		setLogData(timeNow(), "Warn", module, message, err)
+	}
 }
 
 // Error - functional error level log
 // Failure of a function or feature to execute
 // The application should still be operable
 func Error(module string, message string, err error) {
-	setLogData(timeNow(), "Error", module, message, err)
+	if verbosity >= 2 {
+		setLogData(timeNow(), "Error", module, message, err)
+	}
 }
 
 // Fatal - application failure level log
 // Indicates the application is inoperable, or a
 // shutdown of the application is imminent
 func Fatal(module string, message string, err error) {
-	setLogData(timeNow(), "Fatal", module, message, err)
+	if verbosity >= 1 {
+		setLogData(timeNow(), "Fatal", module, message, err)
+	}
 }
 
 // Returns the date-time in specified format
