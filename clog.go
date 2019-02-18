@@ -19,7 +19,7 @@ import (
 	"time"
 )
 
-var verbosity = 0
+var verbosity = 5
 var err error
 
 // LogData - Data contained within a log message
