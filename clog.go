@@ -14,12 +14,12 @@ package clog
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
 	"time"
 )
 
-var verbosity = 5
+// Logging is *disabled* until Init is run
+var verbosity = 0
 var err error
 
 // LogData - Data contained within a log message
@@ -38,9 +38,8 @@ func Init(logLevel int) int {
 	// Sets the verbosity level to the given init value
 	// and returns a good status
 	if logLevel < 0 || logLevel > 5 {
-		// Default to 5 if a bad value was received
-		verbosity = 5
-		setLogData(timeNow(), "clogMeta", "Init", "An invalid logging level was received. Logging verbosity will default to "+strconv.Itoa(verbosity)+" (debug).", err)
+		// Default to 0 (disabled) if a bad value was received
+		verbosity = 0
 	} else {
 		verbosity = logLevel
 	}
