@@ -6,45 +6,49 @@ a super simple go logging library
 package main
 
 import (
-  "fmt"
-  "os"
-  "github.com/kenellorando/clog"
+	"os"
+
+	"github.com/kenellorando/clog"
 )
 
-func example() {
-  clog.Debug("example", "Starting example.")
-  clog.Info("example", "Something is happening!")
-  clog.Warn("example", "Something suspect is happening...")
-  
-  _, err := os.Open("fake.txt")
-  if err != nil {
-    clog.Error("example", "An error has occured.", err)
-  }
+func example() error {
+	clog.Debug("example", "Starting example.")
+	clog.Info("example", "Something is happening!")
+	clog.Warn("example", "Something suspect is happening...")
+
+	_, err := os.Open("fake.txt")
+	if err != nil {
+		clog.Error("example", "An error has occured. You can choose to pass the error...", err)
+		clog.Error("example", "...or pass nil.", nil)
+
+		return err
+	}
+
+	return nil
 }
 
 func main() {
-  initVal := clog.Init(5)
-  clog.Debug("main", fmt.Sprintf("Logging initialized to level %v.", initVal)
+	clog.Init(5)
+	clog.Debug("main", "Staring main.")
 
-  example()
-  
-  _, err := os.Open("fake.txt")
-  if err != nil {
-    clog.Error("main", "Example function returned with an error!", err)
-  }
-  clog.Debug("main", "End of program.")
+	err := example()
+	if err != nil {
+		clog.Fatal("main", "Fatal triggers an application exit.", nil)
+	}
+
+	clog.Debug("main", "Program finished with no errors.")
 }
 ```
 
 *Example output*
 ```
-2019/02/15 19:07:50 [DEBUG][MAIN] Logging initialized to level 5.
-2019/02/15 19:07:50 [DEBUG][EXAMPLE] Starting example.
-2019/02/15 19:07:50 [INFO ][EXAMPLE] Something is happening!
-2019/02/15 19:07:50 [WARN ][EXAMPLE] Something suspect is happening...
-2019/02/15 19:07:50 [ERROR][EXAMPLE] An error has occured.
+2019/02/21 12:49:44 [DEBUG][MAIN] Staring main.
+2019/02/21 12:49:44 [DEBUG][EXAMPLE] Starting example.
+2019/02/21 12:49:44 [INFO ][EXAMPLE] Something is happening!
+2019/02/21 12:49:44 [WARN ][EXAMPLE] Something suspect is happening...
+2019/02/21 12:49:44 [ERROR][EXAMPLE] An error has occured. You can choose to pass the error...
 open fake.txt: no such file or directory
-2019/02/15 19:07:50 [ERROR][MAIN] Example function returned with an error!
-open fake.txt: no such file or directory
-2019/02/15 19:07:50 [DEBUG][MAIN] End of program.
+2019/02/21 12:49:44 [ERROR][EXAMPLE] ...or pass nil.
+2019/02/21 12:49:44 [FATAL][MAIN] Fatal triggers an application exit.
+exit status 1
 ```
