@@ -14,6 +14,7 @@ package clog
 
 import (
 	"fmt"
+	"os"
 	"strings"
 	"time"
 )
@@ -81,11 +82,13 @@ func Error(module string, message string, err error) {
 
 // Fatal - application failure level log
 // Indicates the application is inoperable, or a
-// shutdown of the application is imminent
+// shutdown of the application is imminent.
+// Calls Exit
 func Fatal(module string, message string, err error) {
 	if verbosity >= 1 {
 		setLogData(timeNow(), "Fatal", module, message, err)
 	}
+	os.Exit(1)
 }
 
 // Returns the date-time in specified format
