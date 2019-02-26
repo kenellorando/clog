@@ -19,8 +19,8 @@ import (
 	"time"
 )
 
-// Logging is *disabled* until Init is run
-var verbosity = 0
+// Default verbosity, until Init is run
+var verbosity = 5
 var err error
 
 // LogData - Data contained within a log message
@@ -33,9 +33,9 @@ type LogData struct {
 	Err     error
 }
 
-// Init - Receiver of any initialization data
+// Level - Receives and sets a logging level
 // Valid log levels are 1-5
-func Init(logLevel int) int {
+func Level(logLevel int) int {
 	// Sets the verbosity level to the given init value
 	// and returns a good status
 	if logLevel < 0 || logLevel > 5 {
