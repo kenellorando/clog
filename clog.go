@@ -3,12 +3,12 @@
 // github.com/kenellorando/clog
 
 // Log Levels: Debug (5), Info (4), Warn (3), Error (2), Fatal (1), Disabled (0)
-// The default is 0 (disabled) unless an init is attempted
+// The default is 5 (debug) unless verbosity is set with clog.Level
 
 // args for Debug, Info, Warn: (module string, message string)
 // args for Error, Fatal: (module string, message string, err error)
 
-// Prints log messages to stdout
+// All log messages are printed to stdout
 
 package clog
 
