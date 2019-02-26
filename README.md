@@ -1,7 +1,26 @@
 # clog
 a super simple go logging library
 
-*Example usage*
+### Usage
+`clog` prints log messages to stdout.
+
+**Import**: To import `clog`, run `go get github.com/kenellorando/clog` and add `"github.com/kenellorando/clog"` to your import statements.
+
+**Set Log Level**: To set logging verbosity, you may use `clog.Level(n)` where `n` is a valid integer in range [0, 5]. Running `Level` is optional; `clog` will default to maximum verbosity (5, debug), if no value is received.
+
+`clog`'s logging levels are:
+```
+0. (disabled)
+1. Fatal
+2. Error
+3. Warn
+4. Info
+5. Debug
+```
+
+
+### Example
+*main.go*
 ```Go
 package main
 
@@ -28,7 +47,7 @@ func example() error {
 }
 
 func main() {
-	clog.Init(5)
+	clog.Level(5)
 	clog.Debug("main", "Staring main.")
 
 	err := example()
@@ -40,7 +59,7 @@ func main() {
 }
 ```
 
-*Example output*
+*stdout*
 ```
 2019/02/21 12:49:44 [DEBUG][MAIN] Staring main.
 2019/02/21 12:49:44 [DEBUG][EXAMPLE] Starting example.
