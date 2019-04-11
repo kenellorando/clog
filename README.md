@@ -1,10 +1,12 @@
 # clog
-a super simple go logging library
+clog is a super simple go logging library. clog prints to stdout like this:
+```
+2019/02/21 12:49:44 [LOGLEVEL][MODULE] Log message.
+```
 
-### Usage
-`clog` prints log messages to stdout.
+## Usage
 
-**Import**: To import `clog`, run `go get github.com/kenellorando/clog` and add `"github.com/kenellorando/clog"` to your import statements.
+**Import**: To import clog, run `go get github.com/kenellorando/clog` and add `"github.com/kenellorando/clog"` to your import statements.
 
 **Set Log Level**: To set logging verbosity, you may use `clog.Level(n)` where `n` is a valid integer in range [0, 5]. Running `Level` is optional; `clog` will default to maximum verbosity (5, debug), if no value is received.
 
@@ -19,7 +21,7 @@ a super simple go logging library
 ```
 
 
-### Example
+## Example
 *main.go*
 ```Go
 package main
