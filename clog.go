@@ -19,7 +19,7 @@ import (
 	"time"
 )
 
-// Default verbosity, until Init is run
+// Default verbosity, unless Level is called
 var verbosity = 5
 var err error
 
@@ -34,7 +34,7 @@ type LogData struct {
 }
 
 // Level - Receives and sets a logging level
-// Valid log levels are 1-5
+// Valid log levels are [0-5]
 func Level(logLevel int) int {
 	// Sets the verbosity level to the given init value
 	// and returns a good status
@@ -48,7 +48,6 @@ func Level(logLevel int) int {
 }
 
 // Debug - lowest level log
-// Atomic level application logging
 func Debug(module string, message string) {
 	if verbosity == 5 {
 		setLogData(timeNow(), "Debug", module, message, err)
@@ -56,7 +55,6 @@ func Debug(module string, message string) {
 }
 
 // Info - functional information level log
-// Function level application information
 func Info(module string, message string) {
 	if verbosity >= 4 {
 		setLogData(timeNow(), "Info", module, message, err)
@@ -64,7 +62,6 @@ func Info(module string, message string) {
 }
 
 // Warn - functional warning level log
-// Monitoring for potential erroneous or fatal situations
 func Warn(module string, message string) {
 	if verbosity >= 3 {
 		setLogData(timeNow(), "Warn", module, message, err)
@@ -72,8 +69,6 @@ func Warn(module string, message string) {
 }
 
 // Error - functional error level log
-// Failure of a function or feature to execute
-// The application should still be operable
 func Error(module string, message string, err error) {
 	if verbosity >= 2 {
 		setLogData(timeNow(), "Error", module, message, err)
@@ -81,8 +76,6 @@ func Error(module string, message string, err error) {
 }
 
 // Fatal - application failure level log
-// Indicates the application is inoperable, or a
-// shutdown of the application is imminent.
 // Calls Exit
 func Fatal(module string, message string, err error) {
 	if verbosity >= 1 {
