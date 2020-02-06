@@ -69,7 +69,7 @@ func Init(app string, logLevel int, write bool, print bool) {
 			os.Mkdir(path, 766)
 		}
 		// Create a logfile if it does not exist
-		logFile, _ := os.OpenFile(path+"/"+application+".log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0766)
+		os.OpenFile(path+"/"+application+".log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0766)
 	}
 
 	if print == false {
