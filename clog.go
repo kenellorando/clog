@@ -19,8 +19,21 @@ import (
 	"time"
 )
 
-// Default verbosity, unless Level is called
+// Default application name, unless Init() overwites this.
+var application = "clog"
+
+// Default write-to-disk logging location, unless Init() overwites this.
+var path = "/var/log/" + application
+
+// Default write-to-disk option, unless Init() overwites this.
+var write = true
+
+// Default print to stdout, unless Init() overwites this.
+var print = true
+
+// Default verbosity, unless Init() overwites this.
 var verbosity = 5
+
 var err error
 
 // LogData - Data contained within a log message
@@ -33,18 +46,37 @@ type LogData struct {
 	Err     error
 }
 
-// Level - Receives and sets a logging level
-// Valid log levels are [0-5]
-func Level(logLevel int) int {
-	// Sets the verbosity level to the given init value
-	// and returns a good status
+func Init(app string, logLevel int, write bool, print bool) {
+	if app != "" {
+		application = app
+		path = "/var/log/" + application
+	}
+
 	if logLevel < 0 || logLevel > 5 {
-		// Default to 0 (disabled) if a bad value was received
-		verbosity = 0
+		// Default to 5 (debug) if a bad value was received
+		verbosity = 5
 	} else {
 		verbosity = logLevel
 	}
-	return verbosity
+
+	if write == false {
+		write = false
+	} else {
+		write = true
+
+		// Create a logging directory named after the application
+		if _, err := os.Stat(path); os.IsNotExist(err) {
+			os.Mkdir(path, 766)
+		}
+		// Create a logfile if it does not exist
+		logFile, _ := os.OpenFile(path+"/"+application+".log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0766)
+	}
+
+	if print == false {
+		print = false
+	} else {
+		print = true
+	}
 }
 
 // Debug - lowest level log
@@ -87,7 +119,11 @@ func Fatal(module string, message string, err error) {
 // Returns the date-time in specified format
 func timeNow() string {
 	dt := time.Now()
-	return dt.Format("2006/01/02 15:04:05")
+	return dt.Format("2006/01/02-15:04:05")
+}
+
+func logFileWriter() {
+
 }
 
 // Set data passed by log level methods
@@ -100,31 +136,29 @@ func setLogData(time string, level string, module string, message string, err er
 		Err:     err,
 	}
 
-	printLogMessage(logData)
+	logMessage := fmt.Sprintf(
+		"%v [%5v][%s] %s\n%v\n",
+		logData.Time,
+		strings.ToUpper(logData.Level),
+		strings.ToUpper(logData.Module),
+		logData.Message,
+		logData.Err)
+
+	if print {
+		fmt.Printf("%s", logMessage)
+	}
+	if write {
+		writeToFile(logMessage)
+	}
 }
 
-// Print the formatted log message to stdout
-func printLogMessage(ld LogData) {
-	// If there is an error set in logData,
-	// Print the error with the log message
-	if ld.Err != nil {
-		logMessage := fmt.Sprintf(
-			"%v [%5v][%s] %s\n%v\n",
-			ld.Time,
-			strings.ToUpper(ld.Level),
-			strings.ToUpper(ld.Module),
-			ld.Message,
-			ld.Err,
-		)
-		fmt.Printf(logMessage)
-	} else {
-		logMessage := fmt.Sprintf(
-			"%v [%-5v][%s] %s\n",
-			ld.Time,
-			strings.ToUpper(ld.Level),
-			strings.ToUpper(ld.Module),
-			ld.Message,
-		)
-		fmt.Printf(logMessage)
+func writeToFile(logMessage string) {
+	file, _ := os.Stat(path + "/" + application + ".log")
+	// Rotate once logfile > 50 MB
+	if file.Size() > file.Size()/1024/1024*50 {
+		os.Rename(path+"/"+application+".log", path+"/"+application+"-"+timeNow()+".log")
 	}
+
+	logFile, _ := os.OpenFile(path+"/"+application+".log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0766)
+	fmt.Fprintln(logFile, logMessage)
 }
