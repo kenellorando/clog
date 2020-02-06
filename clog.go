@@ -156,10 +156,10 @@ func setLogData(time string, level string, module string, message string, err er
 		logData.Message,
 		logData.Err)
 
-	if print {
+	if print == true {
 		fmt.Printf("%s", logMessage)
 	}
-	if write {
+	if write == true {
 		writeToFile(logMessage)
 	}
 }
