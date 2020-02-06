@@ -125,6 +125,7 @@ func timeNow() string {
 func writeToFile(logMessage string) {
 	file, _ := os.Stat(path + "/" + application + ".log")
 	// Rotate once logfile > 50 MB
+	fmt.Println(file.Size())
 	if file.Size() > file.Size()/1024/1024*50 {
 		os.Rename(path+"/"+application+".log", path+"/"+application+"-"+timeNow()+".log")
 	}
