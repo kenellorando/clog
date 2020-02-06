@@ -122,8 +122,15 @@ func timeNow() string {
 	return dt.Format("2006/01/02-15:04:05")
 }
 
-func logFileWriter() {
+func writeToFile(logMessage string) {
+	file, _ := os.Stat(path + "/" + application + ".log")
+	// Rotate once logfile > 50 MB
+	if file.Size() > file.Size()/1024/1024*50 {
+		os.Rename(path+"/"+application+".log", path+"/"+application+"-"+timeNow()+".log")
+	}
 
+	logFile, _ := os.OpenFile(path+"/"+application+".log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0766)
+	fmt.Fprintln(logFile, logMessage)
 }
 
 // Set data passed by log level methods
@@ -150,15 +157,4 @@ func setLogData(time string, level string, module string, message string, err er
 	if write {
 		writeToFile(logMessage)
 	}
-}
-
-func writeToFile(logMessage string) {
-	file, _ := os.Stat(path + "/" + application + ".log")
-	// Rotate once logfile > 50 MB
-	if file.Size() > file.Size()/1024/1024*50 {
-		os.Rename(path+"/"+application+".log", path+"/"+application+"-"+timeNow()+".log")
-	}
-
-	logFile, _ := os.OpenFile(path+"/"+application+".log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0766)
-	fmt.Fprintln(logFile, logMessage)
 }
