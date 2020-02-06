@@ -147,14 +147,24 @@ func setLogData(time string, level string, module string, message string, err er
 		Message: message,
 		Err:     err,
 	}
-
-	logMessage := fmt.Sprintf(
-		"%v [%5v][%s] %s\n%v\n",
-		logData.Time,
-		strings.ToUpper(logData.Level),
-		strings.ToUpper(logData.Module),
-		logData.Message,
-		logData.Err)
+	var logMessage string
+	if logData.Err != nil {
+		logMessage = fmt.Sprintf(
+			"%v [%5v][%s] %s\n%v\n",
+			logData.Time,
+			strings.ToUpper(logData.Level),
+			strings.ToUpper(logData.Module),
+			logData.Message,
+			logData.Err)
+	} else {
+		logMessage = fmt.Sprintf(
+			"%v [%5v][%s] %s\n%v\n",
+			logData.Time,
+			strings.ToUpper(logData.Level),
+			strings.ToUpper(logData.Module),
+			logData.Message,
+			logData.Err)
+	}
 
 	if print == true {
 		fmt.Printf("%s", logMessage)
