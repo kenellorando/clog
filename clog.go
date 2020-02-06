@@ -47,6 +47,8 @@ type LogData struct {
 }
 
 func Init(app string, logLevel int, write bool, print bool) {
+
+	fmt.Printf("%s %v %v %v", app, logLevel, write, print)
 	if app != "" {
 		application = app
 		path = "/var/log/" + application
@@ -68,6 +70,7 @@ func Init(app string, logLevel int, write bool, print bool) {
 		if _, err := os.Stat(path); os.IsNotExist(err) {
 			os.Mkdir(path, 766)
 		}
+		fmt.Println(err)
 		// Create a logfile if it does not exist
 		os.OpenFile(path+"/"+application+".log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0766)
 	}
