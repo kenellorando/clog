@@ -48,7 +48,7 @@ type LogData struct {
 
 func Init(app string, logLevel int, write bool, print bool) {
 
-	fmt.Printf("%s %v %v %v", app, logLevel, write, print)
+	fmt.Printf("init call %s %v %v %v", app, logLevel, write, print)
 	if app != "" {
 		application = app
 		path = "/var/log/" + application
@@ -126,7 +126,8 @@ func timeNow() string {
 }
 
 func writeToFile(logMessage string) {
-	file, _ := os.Stat(path + "/" + application + ".log")
+	file, err := os.Stat(path + "/" + application + ".log")
+	fmt.Println(err)
 	// Rotate once logfile > 50 MB
 	fmt.Println(file.Size())
 	if file.Size() > file.Size()/1024/1024*50 {
