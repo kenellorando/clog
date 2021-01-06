@@ -1,5 +1,5 @@
 # clog
-clog is a super simple go logging library. clog prints to stdout like this:
+clog is a super simple go logging package. clog prints to stdout like this:
 ```
 2019/02/21 12:49:44 [LOGLEVEL][MODULE] Log message.
 ```
