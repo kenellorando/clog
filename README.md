@@ -1,14 +1,16 @@
 # clog
-clog is a super simple go logging package. clog prints to stdout like this:
+clog is a super simple go logging package. 
+
+clog prints to stdout like this:
 ```
-2019/02/21 12:49:44 [LOGLEVEL][MODULE] Log message.
+2019/02/21 12:49:44 [LOGLEVEL][CUSTOMLABEL] Log message.
 ```
+
+## Import
+Add `"github.com/kenellorando/clog"` to your import statements.
 
 ## Usage
-
-**Import**: To import clog, run `go get github.com/kenellorando/clog` and add `"github.com/kenellorando/clog"` to your import statements.
-
-**Set Log Level**: To set logging verbosity, you may use `clog.Level(n)` where `n` is a valid integer in range [0, 5]. Running `Level` is optional; `clog` will default to maximum verbosity (5, debug), if no value is received.
+clog runs as-is at maximum verbosity (5, debug) with no initialization. However, you may optionally change verbosity with `clog.Level(n)` where `n` is a valid integer in range [0, 5].
 
 `clog`'s logging levels are:
 ```
@@ -34,8 +36,8 @@ import (
 
 func example() error {
 	clog.Debug("example", "Starting example.")
-	clog.Info("example", "Something is happening!")
-	clog.Warn("example", "Something suspect is happening...")
+	clog.Info("example123", "Something is happening!")
+	clog.Warn("exampleABC", "Something suspect is happening...")
 
 	_, err := os.Open("fake.txt")
 	if err != nil {
@@ -65,8 +67,8 @@ func main() {
 ```
 2019/02/21 12:49:44 [DEBUG][MAIN] Staring main.
 2019/02/21 12:49:44 [DEBUG][EXAMPLE] Starting example.
-2019/02/21 12:49:44 [INFO ][EXAMPLE] Something is happening!
-2019/02/21 12:49:44 [WARN ][EXAMPLE] Something suspect is happening...
+2019/02/21 12:49:44 [INFO ][EXAMPLE123] Something is happening!
+2019/02/21 12:49:44 [WARN ][EXAMPLEABC] Something suspect is happening...
 2019/02/21 12:49:44 [ERROR][EXAMPLE] An error has occured. You can choose to pass the error...
 open fake.txt: no such file or directory
 2019/02/21 12:49:44 [ERROR][EXAMPLE] ...or pass nil.
