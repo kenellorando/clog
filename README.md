@@ -1,29 +1,18 @@
 # clog
-clog is a super simple go logging package. 
+clog is a Go logging package. It is ideal for applications in environments whose standard outputs are caught by other systems, such as container runtimes and Linux system utilities. 
 
-clog prints to stdout like this:
+Log messages look like this. The log level and custom label are easy to read and parse.
 ```
 2019/02/21 12:49:44 [LOGLEVEL][CUSTOMLABEL] Log message.
 ```
 
 ## Import
-Add `"github.com/kenellorando/clog"` to your import statements.
+Run `go get github.com/kenellorando/clog` and add `"github.com/kenellorando/clog"` to your import statements.
 
 ## Usage
-clog runs as-is at maximum verbosity (5, debug) with no initialization. However, you may optionally change verbosity with `clog.Level(n)` where `n` is a valid integer in range [0, 5].
+clog provides five levels of message types (`1-Debug / 2-Info / 3-Warn / 4-Error / 5-Fatal`). All messages will be printed by default, but you may optionally set verbosity with `clog.Level(n)` where `n` is in range [0, 5]. When verbosity is set, only messages at that level and up ("more severe") will be printed.
 
-`clog`'s logging levels are:
-```
-0. (disabled)
-1. Fatal
-2. Error
-3. Warn
-4. Info
-5. Debug
-```
-
-
-## Example
+## Example Application
 *main.go*
 ```Go
 package main
