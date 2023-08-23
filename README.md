@@ -1,3 +1,8 @@
+# ⚠️ Archived - Deprecation Notice
+`clog` will no longer be maintained. I originally made this for [Cadence](https://github.com/kenellorando/cadence), to make up for Go standard log package's then-lack of logging levels and customizable information. The release of Go 1.21's standard library includes `slog`, an extremely similar (in name and function) stuctured logger which supports log levels and custom tags. See Go's [slog post](https://go.dev/blog/slog) for details. 
+
+Still, `clog` remains viable for Go projects 1.20 and prior.
+
 # clog
 clog is a Go logging package. It is ideal for applications in environments whose standard outputs are caught by other systems, such as container runtimes and Linux system utilities. 
 
